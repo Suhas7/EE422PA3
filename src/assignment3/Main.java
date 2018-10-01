@@ -36,7 +36,8 @@ public class Main {
 			ps = System.out;			// default output to Stdout
 		}
 		initialize();
-		printLadder(getWordLadderBFS("stone", "money"));
+		ArrayList<String> input = parse(kb);
+		printLadder(getWordLadderBFS(input.get(0),input.get(1)));
 		// TODO methods to read in words, output ladder
 	}
 	
@@ -52,8 +53,10 @@ public class Main {
 	 * If command is /quit, return empty ArrayList. 
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
-		// TO DO
-		return null;
+		ArrayList<String> output = new ArrayList<String>(2);
+		output.add(keyboard.next());
+		output.add(keyboard.next());
+		return output;
 	}
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
