@@ -16,6 +16,8 @@
 package assignment3;
 import java.util.*;
 import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Main {
 	
@@ -35,7 +37,7 @@ public class Main {
 			ps = System.out;			// default output to Stdout
 		}
 		initialize();
-		
+		getWordLadderBFS("stone", "money");
 		// TODO methods to read in words, output ladder
 	}
 	
@@ -59,25 +61,90 @@ public class Main {
 		
 		// Returned list should be ordered start to end.  Include start and end.
 		// If ladder is empty, return list with just start and end.
-		// TODO some code
 		Set<String> dict = makeDictionary();
-		// TODO more code
-		
+
+
 		return null; // replace this line later with real return
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		
-		// TODO some code
+		start = start.toUpperCase();
+		end = end.toUpperCase();
 		Set<String> dict = makeDictionary();
-		// TODO more code
-		
+		Set<String> visited = new HashSet<String>();
+		Map<String, String> edgeMap = new HashMap<String, String>();
+		Queue<String> nodeQueue = new LinkedList<>();
+		nodeQueue.add(start);
+		String curr=start;
+		visited.add(curr);
+		endFound:
+		while(!nodeQueue.isEmpty() && curr!=end) {
+			curr=((LinkedList<String>) nodeQueue).pop();
+			for (int i = 0; i < curr.length(); i++) {  //Add all children to queue
+				for (char j = 'A'; j <= 'Z'; j++) {
+					String tmpVariation = curr.substring(0,i)+String.valueOf(j)+curr.substring(i+1);
+					if(dict.contains(tmpVariation) && !visited.contains(tmpVariation)){
+						nodeQueue.add(tmpVariation);
+						visited.add(tmpVariation);
+						edgeMap.put(tmpVariation,curr);
+						if(tmpVariation.equals(end)){
+							curr=end;
+							break endFound;
+						}
+					}
+				}
+			}
+		}
+		Stack<String> finalLadder = new Stack<String>();
+		while(curr!=start){
+			finalLadder.push(curr);
+			curr=edgeMap.get(curr);
+		}
+		finalLadder.push(start);
+		while(!finalLadder.isEmpty()){
+			System.out.println(finalLadder.pop());
+		}
 		return null; // replace this line later with real return
 	}
-    
-	
+	private Set<String> getAdjacentLetterCount(String word, Set<String> dict){
+		Set<String> out = new HashSet<String>();
+		for(String curr : dict){
+			if(getDiffLetters(word,curr)==1){
+				out.add(curr);
+			}
+		}
+		return out;
+	}
+
+	private int getDiffLetters(String a, String b){
+		if(a.length()!=b.length()){
+			return -1;
+		}
+		int out = 0;
+		for(int i = 0;i<a.length();i++){
+			if(a.charAt(i)!=b.charAt(i)){
+				out++;
+			}
+		}
+		return out;
+	}
+
 	public static void printLadder(ArrayList<String> ladder) {
-		
+		String currentWord = ladder.get(0);
+		System.out.println(currentWord);
+		String lastWord=currentWord;
+		for(int i = 1; i<ladder.size();i++){
+			currentWord = ladder.get(i);
+			int diff=0;
+			for(int j = 0; j<currentWord.length();j++){
+				if(currentWord.charAt(j)!=lastWord.charAt(j)){
+					diff = j;
+				}
+			}
+			String out = currentWord.substring(0,diff)+(currentWord.charAt(diff)+32)+currentWord.substring(diff+1);
+			System.out.println(out);
+			lastWord=currentWord;
+		}
 	}
 	// TODO
 	// Other private static methods here
