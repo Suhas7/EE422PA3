@@ -68,26 +68,26 @@ public class Main {
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		start = start.toUpperCase();
+		start = start.toUpperCase(); //clean input
 		end = end.toUpperCase();
-		Set<String> dict = makeDictionary();
-		Set<String> visited = new HashSet<String>();
-		Map<String, String> edgeMap = new HashMap<String, String>();
-		Queue<String> nodeQueue = new LinkedList<>();
-		nodeQueue.add(start);
+		Set<String> dict = makeDictionary(); //geenerate dict
+		Set<String> visited = new HashSet<String>(); //create set for logging visited
+		Map<String, String> edgeMap = new HashMap<String, String>(); //map stores child -> parent pairs
+		Queue<String> nodeQueue = new LinkedList<>(); //create queue for which nodes to work through, BFS
+		nodeQueue.add(start);//seed initial conditions
 		String curr=start;
 		visited.add(curr);
-		endFound:
+		endFound: //stop traversing once end is found, label to jump to
 		while(!nodeQueue.isEmpty() && curr!=end) {
 			curr=((LinkedList<String>) nodeQueue).pop();
-			for (int i = 0; i < curr.length(); i++) {  //Add all children to queue
+			for (int i = 0; i < curr.length(); i++) {  //explore all child variants
 				for (char j = 'A'; j <= 'Z'; j++) {
 					String tmpVariation = curr.substring(0,i)+String.valueOf(j)+curr.substring(i+1);
 					if(dict.contains(tmpVariation) && !visited.contains(tmpVariation)){
-						nodeQueue.add(tmpVariation);
-						visited.add(tmpVariation);
-						edgeMap.put(tmpVariation,curr);
-						if(tmpVariation.equals(end)){
+						nodeQueue.add(tmpVariation); //build queue w next children
+						visited.add(tmpVariation);  //log as visited
+						edgeMap.put(tmpVariation,curr); //store variation/parent pair in map
+						if(tmpVariation.equals(end)){ //if you reached the end, artificially break loop
 							curr=end;
 							break endFound;
 						}
@@ -96,15 +96,19 @@ public class Main {
 			}
 		}
 		Stack<String> finalLadder = new Stack<String>();
-		while(curr!=start){
+		while(curr!=start){    //traverse edgemap to get to beginning, push to stack
 			finalLadder.push(curr);
 			curr=edgeMap.get(curr);
 		}
 		finalLadder.push(start);
-		while(!finalLadder.isEmpty()){
-			System.out.println(finalLadder.pop());
+		ArrayList<String> outputLadder =  new ArrayList<String>(finalLadder.size());
+		int i = 0;
+		while(!finalLadder.isEmpty()){  //convert stack to returnable array
+			outputLadder.add(finalLadder.pop().toLowerCase());
+			//System.out.println(outputLadder.get(i));  //debugging to see final list
+			i++;
 		}
-		return null; // replace this line later with real return
+		return outputLadder; // replace this line later with real return
 	}
 	private Set<String> getAdjacentLetterCount(String word, Set<String> dict){
 		Set<String> out = new HashSet<String>();
