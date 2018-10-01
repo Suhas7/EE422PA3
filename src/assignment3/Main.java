@@ -37,7 +37,7 @@ public class Main {
 			ps = System.out;			// default output to Stdout
 		}
 		initialize();
-		getWordLadderBFS("stone", "money");
+		printLadder(getWordLadderBFS("stone", "money"));
 		// TODO methods to read in words, output ladder
 	}
 	
@@ -145,7 +145,7 @@ public class Main {
 					diff = j;
 				}
 			}
-			String out = currentWord.substring(0,diff)+(currentWord.charAt(diff)+32)+currentWord.substring(diff+1);
+			String out = currentWord.substring(0,diff)+String.valueOf(currentWord.charAt(diff)).toUpperCase()+currentWord.substring(diff+1);
 			System.out.println(out);
 			lastWord=currentWord;
 		}
