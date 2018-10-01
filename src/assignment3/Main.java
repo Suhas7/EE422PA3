@@ -12,7 +12,6 @@
  * Fall 2018
  */
 
-
 package assignment3;
 import java.util.*;
 import java.io.*;
@@ -78,7 +77,7 @@ public class Main {
 		String curr=start;
 		visited.add(curr);
 		endFound: //stop traversing once end is found, label to jump to
-		while(!nodeQueue.isEmpty() && curr!=end) {
+		while(!nodeQueue.isEmpty() && !curr.equals(end)) {
 			curr=((LinkedList<String>) nodeQueue).pop();
 			for (int i = 0; i < curr.length(); i++) {  //explore all child variants
 				for (char j = 'A'; j <= 'Z'; j++) {
@@ -96,7 +95,7 @@ public class Main {
 			}
 		}
 		Stack<String> finalLadder = new Stack<String>();
-		while(curr!=start){    //traverse edgemap to get to beginning, push to stack
+		while(!curr.equals(start)){    //traverse edgemap to get to beginning, push to stack
 			finalLadder.push(curr);
 			curr=edgeMap.get(curr);
 		}
@@ -143,6 +142,7 @@ public class Main {
 			for(int j = 0; j<currentWord.length();j++){
 				if(currentWord.charAt(j)!=lastWord.charAt(j)){
 					diff = j;
+					break;
 				}
 			}
 			String out = currentWord.substring(0,diff)+String.valueOf(currentWord.charAt(diff)).toUpperCase()+currentWord.substring(diff+1);
