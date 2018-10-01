@@ -19,12 +19,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Main {
-	
-	// static variables and constants only here.
-	
+	public static ArrayList<String> input; //stores the words input by user
+	public static Scanner kb;	// input Scanner for commands
 	public static void main(String[] args) throws Exception {
-		
-		Scanner kb;	// input Scanner for commands
 		PrintStream ps;	// output file, for student testing and grading only
 		// If arguments are specified, read/write from/to files instead of Std IO.
 		if (args.length != 0) {
@@ -36,15 +33,12 @@ public class Main {
 			ps = System.out;			// default output to Stdout
 		}
 		initialize();
-		ArrayList<String> input = parse(kb);
 		printLadder(getWordLadderBFS(input.get(0),input.get(1)));
 		// TODO methods to read in words, output ladder
 	}
 	
 	public static void initialize() {
-		// initialize your static variables or constants here.
-		// We will call this method before running our JUNIT tests.  So call it 
-		// only once at the start of main.
+		input = parse(kb);
 	}
 	
 	/**
