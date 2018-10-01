@@ -36,7 +36,7 @@ public class Main {
 		printLadder(getWordLadderBFS(input.get(0),input.get(1)));
 		// TODO methods to read in words, output ladder
 	}
-	
+
 	public static void initialize() {
 		input = parse(kb);
 	}
@@ -66,7 +66,7 @@ public class Main {
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		start = start.toUpperCase(); //clean input
 		end = end.toUpperCase();
-		Set<String> dict = makeDictionary(); //geenerate dict
+		Set<String> dict = makeDictionary(); //geeerate dict
 		Set<String> visited = new HashSet<String>(); //create set for logging visited
 		Map<String, String> edgeMap = new HashMap<String, String>(); //map stores child -> parent pairs
 		Queue<String> nodeQueue = new LinkedList<>(); //create queue for which nodes to work through, BFS
@@ -104,16 +104,10 @@ public class Main {
 			//System.out.println(outputLadder.get(i));  //debugging to see final list
 			i++;
 		}
-		return outputLadder; // replace this line later with real return
-	}
-	private Set<String> getAdjacentLetterCount(String word, Set<String> dict){
-		Set<String> out = new HashSet<String>();
-		for(String curr : dict){
-			if(getDiffLetters(word,curr)==1){
-				out.add(curr);
-			}
+		if(outputLadder.size()==1){
+			outputLadder.add(end); //adds the end word if no ladder was ever found
 		}
-		return out;
+		return outputLadder; // replace this line later with real return
 	}
 
 	private int getDiffLetters(String a, String b){
@@ -131,25 +125,26 @@ public class Main {
 
 	public static void printLadder(ArrayList<String> ladder) {
 		String currentWord = ladder.get(0);
-		System.out.println(currentWord);
-		String lastWord=currentWord;
-		for(int i = 1; i<ladder.size();i++){
-			currentWord = ladder.get(i);
-			int diff=0;
-			for(int j = 0; j<currentWord.length();j++){
-				if(currentWord.charAt(j)!=lastWord.charAt(j)){
-					diff = j;
-					break;
+		System.out.println(currentWord); //print initial entry in ladder
+		String lastWord=currentWord;     //seed lastword variable
+		if(ladder.size()==2){    //check for case where there is no ladder
+			System.out.println(ladder.get(1).toLowerCase());
+		}else {  //if there is a ladder, print it accordingly
+			for (int i = 1; i < ladder.size(); i++) {
+				currentWord = ladder.get(i);
+				int diff = 0;
+				for (int j = 0; j < currentWord.length(); j++) {
+					if (currentWord.charAt(j) != lastWord.charAt(j)) {
+						diff = j;
+						break;
+					}
 				}
+				String out = currentWord.substring(0, diff) + String.valueOf(currentWord.charAt(diff)).toUpperCase() + currentWord.substring(diff + 1);
+				System.out.println(out); //print word w letter changed capitalized
+				lastWord = currentWord; //store last word for comparison purposes
 			}
-			String out = currentWord.substring(0,diff)+String.valueOf(currentWord.charAt(diff)).toUpperCase()+currentWord.substring(diff+1);
-			System.out.println(out);
-			lastWord=currentWord;
 		}
 	}
-	// TODO
-	// Other private static methods here
-
 
 	/* Do not modify makeDictionary */
 	public static Set<String>  makeDictionary () {
