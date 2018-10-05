@@ -21,6 +21,14 @@ import java.util.Queue;
 public class Main {
 	public static ArrayList<String> input; //stores the words input by user
 	public static Scanner kb;	// input Scanner for commands
+	
+	// Static for DFS
+	static ArrayList<String> stack = new ArrayList<String>(); 
+	static ArrayList<String> visited = new ArrayList<String>();
+	static Set<String> dict = Main.makeDictionary(); // check it is okay to create this here
+	static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+	static int count = 0;
+	
 	public static void main(String[] args) throws Exception {
 		PrintStream ps;	// output file, for student testing and grading only
 		// If arguments are specified, read/write from/to files instead of Std IO.
@@ -35,6 +43,11 @@ public class Main {
 		initialize();
 		printLadder(getWordLadderBFS(input.get(0),input.get(1)));
 		// TODO methods to read in words, output ladder
+		
+		// DFS
+		getWordLadderDFS("aloof", "money");
+		printLadder(stack);
+		
 	}
 
 	public static void initialize() {
@@ -54,13 +67,53 @@ public class Main {
 	}
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		
-		// Returned list should be ordered start to end.  Include start and end.
-		// If ladder is empty, return list with just start and end.
-		Set<String> dict = makeDictionary();
+		String startUpperCase = start.toUpperCase(); // convert inputs to upper case
+		String endUpperCase = end.toUpperCase();
+		ArrayList<String> noSolutionReturn = new ArrayList<String>(); // if no word ladder, returns lists of only start and end
+		noSolutionReturn.add(start);
+		noSolutionReturn.add(end);
+		if(!(dict.contains(endUpperCase)) || !(dict.contains(startUpperCase))) { // check for valid inputs
+			return null;
+		}
+		if(!(dfsHelper(startUpperCase, endUpperCase))) { // Recursive function call
+			stack = noSolutionReturn; // return start and end if no word ladder is found
+		}
+		return stack; // return the stack if a word ladder is found
+	}
 
-
-		return null; // replace this line later with real return
+	
+	public static boolean dfsHelper(String start, String end) {
+		// stone and money should return a 3252 word ladder
+		// aloof and money should not find a word ladder
+		// for testing:
+		count++;
+		System.out.println(count);
+		int startLength = start.length(); // length of start word
+		String newWord; // child of start word
+		stack.add(start.toLowerCase()); // push start to stack
+		visited.add(start); // mark start as visited
+		if(stack.get(stack.size()-1).equals(end.toLowerCase())) { // base case: top of stack is the end word
+			return true;
+		}
+		// loop through all children of start
+		for(int j=0; j<startLength; j++) {
+			for(int i=0; i<26; i++) {
+				newWord = start.substring(0, j) + alphabet[i] + start.substring(j+1, startLength);
+				// if the child word has not been visited
+				if(dict.contains(newWord) && !(visited.contains(newWord))) {
+					
+					if(dfsHelper(newWord, end)) {
+						return true;
+					}
+					else {
+						stack.remove(stack.size()-1);
+					}
+					
+				}
+			}
+		}
+		// if you have fallen out of the above loop, then there are no more children, and you need to backtrack
+		return false;
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
