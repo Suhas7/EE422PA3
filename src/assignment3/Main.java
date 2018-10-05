@@ -27,7 +27,6 @@ public class Main {
 	static ArrayList<String> visited = new ArrayList<String>();
 	static Set<String> dict = Main.makeDictionary(); // check it is okay to create this here
 	static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-	static int count = 0;
 
 	public static void main(String[] args) throws Exception {
 		PrintStream ps;	// output file, for student testing and grading only
@@ -41,9 +40,8 @@ public class Main {
 			ps = System.out;			// default output to Stdout
 		}
 		initialize();
+		//BFS
 		printLadder(getWordLadderBFS(input.get(0),input.get(1)));
-		// TODO methods to read in words, output ladder
-
 		// DFS
 		printLadder(getWordLadderDFS(input.get(0), input.get(1)));
 
@@ -60,7 +58,9 @@ public class Main {
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
 		ArrayList<String> output = new ArrayList<String>(2);
-		output.add(keyboard.next());
+		String currString = keyboard.next();
+		if(currString.equals("/quit")){return output;}
+		output.add(currString);
 		output.add(keyboard.next());
 		return output;
 	}
@@ -164,7 +164,7 @@ public class Main {
 		if(outputLadder.size()==1){
 			outputLadder.add(end); //adds the end word if no ladder was ever found
 		}
-		return outputLadder; // replace this line later with real return
+		return outputLadder;
 	}
 
 	private int getDiffLetters(String a, String b){
