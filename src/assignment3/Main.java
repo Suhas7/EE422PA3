@@ -123,7 +123,7 @@ public class Main {
 		String curr=start;
 		visited.add(curr);
 		boolean ladderExists=false;
-		endFound: //stop traversing once end is found, label to jump to
+		endFound: //artificially stop traversing once end is found, label to jump to
 		while(!nodeQueue.isEmpty() && !curr.equals(end)) {
 			curr=((LinkedList<String>) nodeQueue).pop();
 			for (int i = 0; i < curr.length(); i++) {  //explore all child variants
@@ -181,8 +181,8 @@ public class Main {
 	}
 
 	public static void printLadder(ArrayList<String> ladder) {
-		int n = ladder.size();
-		if(n==2) {
+		int n = ladder.size()-2;
+		if(n==0) {
 			System.out.println("no word ladder can be found between " + input.get(0).toLowerCase() + " and " + input.get(1).toLowerCase());
 			return;
 		}
