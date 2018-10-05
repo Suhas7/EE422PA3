@@ -40,7 +40,7 @@ public class Main {
 			ps = System.out;			// default output to Stdout
 		}
 		initialize();
-		//BFS
+		// BFS
 		printLadder(getWordLadderBFS(input.get(0),input.get(1)));
 		// DFS
 		printLadder(getWordLadderDFS(input.get(0), input.get(1)));
@@ -181,6 +181,12 @@ public class Main {
 	}
 
 	public static void printLadder(ArrayList<String> ladder) {
+		int n = ladder.size();
+		if(n==2) {
+			System.out.println("no word ladder can be found between " + input.get(0).toLowerCase() + " and " + input.get(1).toLowerCase());
+			return;
+		}
+		System.out.println("a " + String.valueOf(n) + "-rung word ladder exists between " + input.get(0).toLowerCase() + " and " + input.get(1).toLowerCase());
 		String currentWord = ladder.get(0);
 		System.out.println(currentWord); //print initial entry in ladder
 		String lastWord=currentWord;     //seed lastword variable
