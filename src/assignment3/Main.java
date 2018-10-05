@@ -40,15 +40,20 @@ public class Main {
 			ps = System.out;			// default output to Stdout
 		}
 		initialize();
+		if(input.size()==0){
+			return;
+		}
 		// BFS
 		printLadder(getWordLadderBFS(input.get(0),input.get(1)));
 		// DFS
 		printLadder(getWordLadderDFS(input.get(0), input.get(1)));
-
 	}
 
 	public static void initialize() {
 		input = parse(kb);
+		if(input.size()==0){
+			return;
+		}
 	}
 
 	/**
