@@ -28,6 +28,7 @@ public class Main {
 	static Set<String> dict = Main.makeDictionary(); // check it is okay to create this here
 	static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
+	
 	public static void main(String[] args) throws Exception {
 		PrintStream ps;	// output file, for student testing and grading only
 		// If arguments are specified, read/write from/to files instead of Std IO.
@@ -40,20 +41,26 @@ public class Main {
 			ps = System.out;			// default output to Stdout
 		}
 		initialize();
-		if(input.size()==0){
-			return;
-		}
-		// BFS
-		printLadder(getWordLadderBFS(input.get(0),input.get(1)));
-		// DFS
-		printLadder(getWordLadderDFS(input.get(0), input.get(1)));
-	}
-
-	public static void initialize() {
+		
 		input = parse(kb);
 		if(input.size()==0){
 			return;
 		}
+		
+		if(input.size()==0){
+			return;
+		}
+		// BFS
+		//printLadder(getWordLadderBFS(input.get(0),input.get(1)));
+		// DFS
+		// printLadder(getWordLadderDFS(input.get(0), input.get(1)));
+	}
+
+	public static void initialize() {
+//		input = parse(kb);
+//		if(input.size()==0){
+//			return;
+//		}
 	}
 
 	/**
@@ -188,7 +195,7 @@ public class Main {
 	public static void printLadder(ArrayList<String> ladder) {
 		int n = ladder.size()-2;
 		if(n==0) {
-			System.out.println("no word ladder can be found between " + input.get(0).toLowerCase() + " and " + input.get(1).toLowerCase());
+			System.out.println("no word ladder can be found between " + ladder.get(0).toLowerCase() + " and " + ladder.get(1).toLowerCase());
 			return;
 		}
 		System.out.println("a " + String.valueOf(n) + "-rung word ladder exists between " + input.get(0).toLowerCase() + " and " + input.get(1).toLowerCase());
