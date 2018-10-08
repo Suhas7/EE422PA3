@@ -1,14 +1,13 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Efstratios Maragoudakis
+ * ekm786
+ * 16360
+ * Suhas Raja
+ * scr2469
+ * 16345
  * Slip days used: <0>
- * Git URL:
+ * Git URL:https://github.com/EE422C-Fall-2018/project-3-bfs-dfs-pair-63
  * Fall 2018
  */
 
@@ -23,10 +22,10 @@ public class Main {
 	public static Scanner kb;	// input Scanner for commands
 
 	// Static for DFS
-	static ArrayList<String> stack = new ArrayList<String>();
-	static ArrayList<String> visited = new ArrayList<String>();
-	static Set<String> dict = Main.makeDictionary(); // check it is okay to create this here
-	static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+	static ArrayList<String> stack = new ArrayList<String>(); // stores the DFS path. Used like a stack
+	static ArrayList<String> visited = new ArrayList<String>(); // stores visited words
+	static Set<String> dict = Main.makeDictionary(); 
+	static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray(); // used to generate other words in DFS ladder method
 
 	
 	public static void main(String[] args) throws Exception {
@@ -50,17 +49,22 @@ public class Main {
 		if(input.size()==0){
 			return;
 		}
+		
+		// for personal testing
 		// BFS
-		//printLadder(getWordLadderBFS(input.get(0),input.get(1)));
+		// printLadder(getWordLadderBFS(input.get(0),input.get(1)));
 		// DFS
 		// printLadder(getWordLadderDFS(input.get(0), input.get(1)));
+		// getWordLadderDFS(input.get(0), input.get(1));
+		//System.out.println(stack);
 	}
 
 	public static void initialize() {
-//		input = parse(kb);
-//		if(input.size()==0){
-//			return;
-//		}
+		// for personal testing
+		//	input = parse(kb);
+		//	if(input.size()==0){
+		//	return;
+		//	}
 	}
 
 	/**
@@ -78,8 +82,9 @@ public class Main {
 	}
 
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		String startUpperCase = start.toUpperCase(); // convert inputs to upper case
-		String endUpperCase = end.toUpperCase();
+		// convert inputs to upper case
+		String startUpperCase = start.toUpperCase(); 
+		String endUpperCase = end.toUpperCase(); 
 		ArrayList<String> noSolutionReturn = new ArrayList<String>(); // if no word ladder, returns lists of only start and end
 		noSolutionReturn.add(start);
 		noSolutionReturn.add(end);
@@ -87,7 +92,7 @@ public class Main {
 			return null;
 		}
 		if(!(dfsHelper(startUpperCase, endUpperCase))) { // Recursive function call
-			stack = noSolutionReturn; // return start and end if no word ladder is found
+			stack = new ArrayList<String>(noSolutionReturn); // return start and end if no word ladder is found
 		}
 		return stack; // return the stack if a word ladder is found
 	}
@@ -105,8 +110,9 @@ public class Main {
 			return true;
 		}
 		// loop through all children of start
-		for(int j=0; j<startLength; j++) {
-			for(int i=0; i<26; i++) {
+		for(int j=0; j<startLength; j++) { // for every letter in the word start
+			if(start.charAt(j)!=end.charAt(j)) { // if the letter does not already match the letter in end
+			for(int i=0; i<26; i++) { // change the letter to every letter in the alphabet
 				newWord = start.substring(0, j) + alphabet[i] + start.substring(j+1, startLength);
 				// if the child word has not been visited
 				if(dict.contains(newWord) && !(visited.contains(newWord))) {
@@ -118,6 +124,7 @@ public class Main {
 					}
 
 				}
+			}
 			}
 		}
 		// if you have fallen out of the above loop, then there are no more children, and you need to backtrack
@@ -179,18 +186,6 @@ public class Main {
 		return outputLadder;
 	}
 
-	private int getDiffLetters(String a, String b){
-		if(a.length()!=b.length()){
-			return -1;
-		}
-		int out = 0;
-		for(int i = 0;i<a.length();i++){
-			if(a.charAt(i)!=b.charAt(i)){
-				out++;
-			}
-		}
-		return out;
-	}
 
 	public static void printLadder(ArrayList<String> ladder) {
 		int n = ladder.size()-2;
@@ -215,7 +210,7 @@ public class Main {
 					}
 				}
 				String out = currentWord.substring(0, diff) + String.valueOf(currentWord.charAt(diff)).toUpperCase() + currentWord.substring(diff + 1);
-				System.out.println(out); //print word w letter changed capitalized
+				System.out.println(out.toLowerCase()); //print word w letter changed capitalized
 				lastWord = currentWord; //store last word for comparison purposes
 			}
 		}

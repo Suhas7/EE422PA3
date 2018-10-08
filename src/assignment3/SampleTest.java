@@ -73,7 +73,7 @@ public class SampleTest {
 		assertTrue(res.size() < 6);
 	}
 
-	@Test(timeout = 30000)
+	@Test//(timeout = 30000)
 	public void testDFS1() {
 		ArrayList<String> res = Main.getWordLadderDFS("hello", "cells");
 		if (res != null) {
@@ -114,5 +114,64 @@ public class SampleTest {
 		Main.printLadder(res);
 		String str = outContent.toString().replace("\n", "").replace(".", "").trim();
 		assertEquals("no word ladder can be found between twixt and hakus", str);
+	}
+	
+	/**custom tests*/
+	// test that print word ladder works with DFS when not real words are used
+	@Test(timeout = 30000)
+	public void testPrintLadderDFS() {
+		ArrayList<String> res = Main.getWordLadderDFS("twixt", "hakus");
+		outContent.reset();
+		Main.printLadder(res);
+		String str = outContent.toString().replace("\n", "").replace(".", "").trim();
+		assertEquals("no word ladder can be found between twixt and hakus", str);
+	}
+	
+	// test that print word ladder works with DFS when no ladder exists
+	@Test(timeout = 30000)
+	public void testPrintLadderDFS2() {
+		ArrayList<String> res = Main.getWordLadderDFS("aloof", "money");
+		outContent.reset();
+		Main.printLadder(res);
+		String str = outContent.toString().replace("\n", "").replace(".", "").trim();
+		assertEquals("no word ladder can be found between aloof and money", str);
+	}
+	
+	// test that print word ladder works with BFS when no ladder exists
+	@Test(timeout = 30000)
+	public void testPrintLadderBFS2() {
+		ArrayList<String> res = Main.getWordLadderBFS("aloof", "money");
+		outContent.reset();
+		Main.printLadder(res);
+		String str = outContent.toString().replace("\n", "").replace(".", "").trim();
+		assertEquals("no word ladder can be found between aloof and money", str);
+	}
+	
+	// test that BFS ladder does not have repeating words
+	@Test(timeout = 30000)
+	public void noDuplicatesBFS() {
+		ArrayList<String> res = Main.getWordLadderBFS("stone", "money");
+		ArrayList<String> visited = new ArrayList<String>();
+		for(int i=0; i<res.size();i++) {
+			if(visited.contains(res.get(i))){
+				assertFalse(true);
+			}
+			visited.add(res.get(i));
+		}
+		assertTrue(true);
+	}
+	
+	// test that DFS ladder does not have repeating words
+	@Test(timeout = 30000)
+	public void noDuplicatesDFS() {
+		ArrayList<String> res = Main.getWordLadderDFS("stone", "money");
+		ArrayList<String> visited = new ArrayList<String>();
+		for(int i=0; i<res.size();i++) {
+			if(visited.contains(res.get(i))){
+				assertFalse(true);
+			}
+			visited.add(res.get(i));
+		}
+		assertTrue(true);
 	}
 }
